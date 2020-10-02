@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+    <style>
+        .btn {
+           background-color: #7e479b;
+        }
+        .btn:hover {
+           background-color: #54226f;
+        }
+
+        h4 {
+            color: #7e479b;
+            margin: 40px;            
+        }
+        h6 {
+            color: #3a2b49;
+            margin: 30px;
+            
+        }       
+        body {                   
+           background-image: linear-gradient(to right, #e6ddf2 , #bb9ae8);
+            
+        }
+        h4 {
+            margin: 40px;
+        }
+        .msgError {
+            color: red;
+            font-weight: bold;
+        }
+
+        @media only screen and (max-width: 640px) {
+        body {
+            background-image: url("imagens/background-maxdoctor.png");
+            background-repeat: no-repeat;
+        }
+}
+    </style>
+
+    <title>HuiaTeste</title>
+  </head>
+  <body id="fundo">
+    <div class="container">
+        <div class="text-center" id="teste">
+            <img src="./imagens/maxdoctor.png">
+        </div>
+            
+        <div class="row text-center">
+            <h4>A PLATAFORMA DE COMPRA DIRETA DO SEU ANESTÉSICO TÓPICO</h4>
+        </div>
+
+        <div>
+            <form class="form">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">CRM</span>
+                    </div>
+                    <input type="text" id="inputCrm" class="form-control" placeholder="0000000" aria-label="Username" aria-describedby="basic-addon1">                    
+                </div>
+                <div class="msgError" id="msgCrmForm"></div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupUF">UF</label>
+                    </div>
+                    <!--<select class="custom-select" id="inputGroupUF" id="ufForm">
+                    <option selected>Selecionar</option>-->
+                    <select class="custom-select" id="inputUfForm">
+                        <option selected>Selecionar</option>
+                    </select>
+                </div>
+                <div class="msgError" id="msgUfForm"></div>
+
+                <button type="submit"  onclick="return validaForm()" class="btn btn-secondary btn-lg btn-block">Continue</button>
+            </form> 
+        </div>
+        
+        <div class="row text-center">
+            <h6>CANAL DE COMPRA EXCLUSIVO PARA CLASSE MÉDICA</h4>
+        </div> 
+    </div>   
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
+    <script>        
+        $(document).ready(function buscaUFs(){
+            $.get({ 
+                    url:"https://servicodados.ibge.gov.br/api/v1/localidades/estados",
+                    method:"GET",
+                    success:function(data){
+                        console.log("teste: ",data.length);                        
+                        for(i = 0; i < data.length; i++){
+                            $("#inputUfForm").append("<option value='"+data[i].sigla+"'>"+data[i].sigla+"</option>");                            
+                        }
+                    },
+                    error:function(erro){
+                        console.log(erro);
+                    }
+                });
+        })
+
+        function validaForm(){
+            var crmForm = document.getElementById("inputCrm").value;
+            var ufForm = $('#inputUfForm').val();	
+
+            var retorno = true;        
+
+            console.log("crm = ",crmForm);
+            console.log("uf = ",ufForm);            
+
+            if(crmForm.length < 5 || crmForm == null) {
+                document.getElementById("msgCrmForm").innerHTML="*informar CRM com pelo menos 5 caracteres";
+                retorno = false;
+            }else{
+                document.getElementById("msgCrmForm").innerHTML="";
+            }
+
+            if(ufForm == "Selecionar") {
+                document.getElementById("msgUfForm").innerHTML="*É obrigatório informar UF";
+                retorno = false;
+            }else{
+                document.getElementById("msgUfForm").innerHTML="";
+            }  
+
+            return retorno;  
+        }
+        
+    </script>
+
+  </body>
+</html>
